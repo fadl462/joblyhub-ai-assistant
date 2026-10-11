@@ -1,0 +1,22 @@
+{
+  "name": "sasa-joblyhub-cloudflare",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Sasa \u2014 JoblyHub outreach assistant on Cloudflare Workers and D1",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:create": "wrangler d1 create sasa-joblyhub-db",
+    "db:migrate:local": "wrangler d1 migrations apply sasa-joblyhub-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply sasa-joblyhub-db --remote",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20261011.0",
+    "typescript": "^5.8.3",
+    "wrangler": "^4.40.0"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  }
+}

@@ -1,0 +1,30 @@
+name = "sasa-joblyhub-assistant"
+main = "src/index.ts"
+compatibility_date = "2026-10-11"
+workers_dev = true
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+[triggers]
+# Ghana is UTC+0. 08:00 initializes the workday/follow-up run.
+# 15-minute native Cloudflare schedules preserve the original daytime send window.
+crons = ["0 8 * * 1-5", "*/15 9-16 * * 1-5"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "sasa-joblyhub-db"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+migrations_dir = "migrations"
+
+[vars]
+APP_NAME = "Sasa — JoblyHub Outreach Assistant"
+FROM_EMAIL = "business@joblyhub.com"
+FROM_NAME = "JoblyHub"
+TEST_EMAIL = "fadl_rahman3@yahoo.com"
+APP_BASE_URL = "https://sasa.joblyhub.com"
+DAILY_MAX = "15"
+SEND_START_HOUR = "9"
+SEND_END_HOUR = "16"
+SEND_END_MINUTE = "30"
