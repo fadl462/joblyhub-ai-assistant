@@ -33,7 +33,7 @@ npx wrangler login
 npx wrangler d1 create sasa-joblyhub-db
 ```
 
-Copy the `database_id` returned by the D1 create command into `wrangler.toml`, replacing `REPLACE_WITH_D1_DATABASE_ID`.
+The `wrangler.toml` in this package is configured for the existing `sasa-joblyhub-db` D1 database. If you intentionally use a different database, replace `database_id` with that database’s ID.
 
 Apply the schema locally and remotely:
 
@@ -150,3 +150,6 @@ Import is an upsert by normalized email address. It updates organization details
 ## D1 database bootstrap (important)
 
 The Worker now creates any missing application tables and indexes automatically on the first API request or scheduled run. This prevents the `no such table: organizations` error when the D1 database exists but its migration has not yet been applied. The `DB` binding in Cloudflare must still point to the intended `sasa-joblyhub-db` database. Keep the assistant paused and test mode enabled while checking the dashboard and importing the tracker.
+
+
+**Build fix (October 2026):** The Workers types dependency is pinned to a published stable version range rather than a date-based version that may not yet exist in the npm registry. The D1 binding is configured for the existing `sasa-joblyhub-db` database ID.
