@@ -61,10 +61,10 @@ CREATE TABLE IF NOT EXISTS settings (
   from_name TEXT NOT NULL DEFAULT 'JoblyHub',
   from_email TEXT NOT NULL DEFAULT 'business@joblyhub.com',
   daily_min INTEGER NOT NULL DEFAULT 10,
-  daily_max INTEGER NOT NULL DEFAULT 15,
-  window_start_hour INTEGER NOT NULL DEFAULT 9,
+  daily_max INTEGER NOT NULL DEFAULT 10,
+  window_start_hour INTEGER NOT NULL DEFAULT 8,
   window_end_hour INTEGER NOT NULL DEFAULT 16,
-  window_end_minute INTEGER NOT NULL DEFAULT 30,
+  window_end_minute INTEGER NOT NULL DEFAULT 45,
   followups_enabled INTEGER NOT NULL DEFAULT 1,
   updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

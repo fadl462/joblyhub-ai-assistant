@@ -30,12 +30,9 @@ The original JoblyHub colors, outreach copy direction, tracker concepts, test mo
 ```bash
 npm install
 npx wrangler login
-npx wrangler d1 create sasa-joblyhub-db
-```
+The D1 database `sasa-joblyhub-db` has already been created for this deployment, and its ID is configured in the included `wrangler.toml`. Do not create a second database unless you intentionally want a separate environment.
 
-The `wrangler.toml` in this package is configured for the existing `sasa-joblyhub-db` D1 database. If you intentionally use a different database, replace `database_id` with that database’s ID.
-
-Apply the schema locally and remotely:
+Apply the schema to the existing database. For production, run the remote migration after the Worker configuration has been updated in GitHub:
 
 ```bash
 npm run db:migrate:local
@@ -147,9 +144,5 @@ Import is an upsert by normalized email address. It updates organization details
 - This is a migration starter. Run a local build/typecheck and test in a staging Worker before connecting production DNS or enabling live sends.
 
 
-## D1 database bootstrap (important)
-
-The Worker now creates any missing application tables and indexes automatically on the first API request or scheduled run. This prevents the `no such table: organizations` error when the D1 database exists but its migration has not yet been applied. The `DB` binding in Cloudflare must still point to the intended `sasa-joblyhub-db` database. Keep the assistant paused and test mode enabled while checking the dashboard and importing the tracker.
-
-
-**Build fix (October 2026):** The Workers types dependency is pinned to a published stable version range rather than a date-based version that may not yet exist in the npm registry. The D1 binding is configured for the existing `sasa-joblyhub-db` database ID.
+### Requested schedule
+The native weekday cron runs every 15 minutes from 08:00 through 16:45 Ghana time; runtime guards enforce the configured 08:30–16:45 window and a maximum of 10 initial emails per day. Test mode remains ON and sending remains paused by default. The Worker also initializes missing D1 tables one statement at a time on the first API request.
