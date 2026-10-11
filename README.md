@@ -30,9 +30,12 @@ The original JoblyHub colors, outreach copy direction, tracker concepts, test mo
 ```bash
 npm install
 npx wrangler login
-The D1 database `sasa-joblyhub-db` has already been created for this deployment, and its ID is configured in the included `wrangler.toml`. Do not create a second database unless you intentionally want a separate environment.
+npx wrangler d1 create sasa-joblyhub-db
+```
 
-Apply the schema to the existing database. For production, run the remote migration after the Worker configuration has been updated in GitHub:
+Copy the `database_id` returned by the D1 create command into `wrangler.toml`, replacing `REPLACE_WITH_D1_DATABASE_ID`.
+
+Apply the schema locally and remotely:
 
 ```bash
 npm run db:migrate:local
@@ -142,3 +145,8 @@ Import is an upsert by normalized email address. It updates organization details
 - Automatic IMAP reply classification is not included because the original IMAP client cannot be reused as-is in Workers. Until an inbound email/webhook integration is added, update replies/bounces in the tracker manually. Provider bounce webhooks should be configured before increasing volume.
 - The old `import_tracker.py` expects an XLSX file and a Python database session. This Cloudflare edition uses the dashboard's CSV importer instead; export Excel as CSV UTF-8 first.
 - This is a migration starter. Run a local build/typecheck and test in a staging Worker before connecting production DNS or enabling live sends.
+
+
+## D1 database bootstrap (important)
+
+The Worker now creates any missing application tables and indexes automatically on the first API request or scheduled run. This prevents the `no such table: organizations` error when the D1 database exists but its migration has not yet been applied. The `DB` binding in Cloudflare must still point to the intended `sasa-joblyhub-db` database. Keep the assistant paused and test mode enabled while checking the dashboard and importing the tracker.

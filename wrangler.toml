@@ -15,7 +15,7 @@ crons = ["0 8 * * 1-5", "*/15 9-16 * * 1-5"]
 [[d1_databases]]
 binding = "DB"
 database_name = "sasa-joblyhub-db"
-database_id = "e2e20287-0d2c-44a2-90b6-7c60c7da7a38"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
 migrations_dir = "migrations"
 
 [vars]
