@@ -119,9 +119,16 @@ CREATE TABLE IF NOT EXISTS notifications (
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS idx_notifications_created ON notifications(created_at);`;
-let schemaReady: Promise<unknown> | null = null;
+let schemaReady: Promise<void> | null = null;
 async function ensureSchema(env: Env) {
-  if (!schemaReady) schemaReady = env.DB.exec(BOOTSTRAP_SQL).catch((error) => { schemaReady = null; throw error; });
+  // Execute each statement separately so D1 never receives a truncated
+  // multi-statement CREATE TABLE command from the bootstrap path.
+  if (!schemaReady) {
+    schemaReady = (async () => {
+      const statements = BOOTSTRAP_SQL.split(';').map((statement) => statement.trim()).filter(Boolean);
+      for (const statement of statements) await env.DB.prepare(statement).run();
+    })().catch((error) => { schemaReady = null; throw error; });
+  }
   await schemaReady;
 }
 
