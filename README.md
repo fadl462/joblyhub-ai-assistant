@@ -30,12 +30,9 @@ The original JoblyHub colors, outreach copy direction, tracker concepts, test mo
 ```bash
 npm install
 npx wrangler login
-npx wrangler d1 create sasa-joblyhub-db
-```
+The D1 database `sasa-joblyhub-db` has already been created for this deployment, and its ID is configured in the included `wrangler.toml`. Do not create a second database unless you intentionally want a separate environment.
 
-Copy the `database_id` returned by the D1 create command into `wrangler.toml`, replacing `REPLACE_WITH_D1_DATABASE_ID`.
-
-Apply the schema locally and remotely:
+Apply the schema to the existing database. For production, run the remote migration after the Worker configuration has been updated in GitHub:
 
 ```bash
 npm run db:migrate:local
